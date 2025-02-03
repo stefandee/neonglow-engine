@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="md2_test" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/md2_test" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="E:/Projects/github/neonglow-engine/examples" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-m64" />
+					<Add option="-g" />
+					<Add directory="../../../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-static" />
+					<Add option="-m64" />
+					<Add directory="$(#sdl2.LIB)" />
+					<Add directory="$(#gcc.LIB)" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/md2_test" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="E:/Projects/github/neonglow-engine/examples" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../../../../lib/SDL2-2.30.11/x86_64-w64-mingw32/include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDL2main" />
+			<Add library="SDL2.dll" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="XCOPY ..\..\..\..\lib\SDL2-2.30.11\x86_64-w64-mingw32\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
+		</ExtraCommands>
+		<Unit filename="../../../../src/CLight.cpp" />
+		<Unit filename="../../../../src/CLight.h" />
+		<Unit filename="../../../../src/CSurface.cpp" />
+		<Unit filename="../../../../src/CSurface.h" />
+		<Unit filename="../../../../src/CTriangleSurface.cpp" />
+		<Unit filename="../../../../src/CTriangleSurface.h" />
+		<Unit filename="../../../../src/bitutils.cpp" />
+		<Unit filename="../../../../src/bitutils.h" />
+		<Unit filename="../../../../src/bspworld.cpp" />
+		<Unit filename="../../../../src/bspworld.h" />
+		<Unit filename="../../../../src/camera.cpp" />
+		<Unit filename="../../../../src/camera.h" />
+		<Unit filename="../../../../src/color.cpp" />
+		<Unit filename="../../../../src/color.h" />
+		<Unit filename="../../../../src/data3d.cpp" />
+		<Unit filename="../../../../src/data3d.h" />
+		<Unit filename="../../../../src/fixed.h" />
+		<Unit filename="../../../../src/geom.cpp" />
+		<Unit filename="../../../../src/geom.h" />
+		<Unit filename="../../../../src/math3d.cpp" />
+		<Unit filename="../../../../src/math3d.h" />
+		<Unit filename="../../../../src/md2load.cpp" />
+		<Unit filename="../../../../src/md2load.h" />
+		<Unit filename="../../../../src/objlib.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../../../src/objlib.h" />
+		<Unit filename="../../../../src/prims.cpp" />
+		<Unit filename="../../../../src/prims.h" />
+		<Unit filename="../../../../src/q2bspload.cpp" />
+		<Unit filename="../../../../src/q2bspload.h" />
+		<Unit filename="../../../../src/q3bspload.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="../../../../src/q3bspload.h" />
+		<Unit filename="../../../../src/quaternion.cpp" />
+		<Unit filename="../../../../src/quaternion.h" />
+		<Unit filename="../../../../src/rserver.cpp" />
+		<Unit filename="../../../../src/rserver.h" />
+		<Unit filename="../../../../src/tex.cpp" />
+		<Unit filename="../../../../src/tex.h" />
+		<Unit filename="../../../../src/texmgr.cpp" />
+		<Unit filename="../../../../src/texmgr.h" />
+		<Unit filename="../../src/md2_test.cpp" />
+		<Extensions>
+			<editor_config active="1" use_tabs="0" tab_indents="1" tab_width="4" indent="4" eol_mode="0" />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

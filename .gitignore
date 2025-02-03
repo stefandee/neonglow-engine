@@ -30,3 +30,18 @@
 *.exe
 *.out
 *.app
+
+# Releases
+.releases/
+
+# Temporary/generated folders and files
+bin/
+obj/
+tmp/
+
+# Code::Blocks
+*.depend
+*.layout
+
+# 3rd party
+lib/**/
