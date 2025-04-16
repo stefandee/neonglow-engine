@@ -1,6 +1,8 @@
 # NeonGlow 3D Engine
 
-![NeonGlow Engine Logo](web/nge.jpg)
+<p align="center">
+  <img src="https://github.com/stefandee/neonglow-engine/blob/main/web/nge.jpg">
+</p>
 
 NeonGlow is a software rendering 3D engine written in C/C++.
 
