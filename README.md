@@ -1,4 +1,7 @@
 # NeonGlow 3D Engine
+
+![NeonGlow Engine Logo](.web/nge.png)
+
 NeonGlow is a software rendering 3D engine written in C/C++.
 
 It's a purely educational engine and it was meant to serve as optional lab work for the SPG course (advanced graphics programming) held by Sorin Babii at Technical University of Timisoara. 
@@ -31,7 +34,7 @@ If you have installed SDL in another directory than [lib](lib/), you may need to
 * adjust Project Build Settings > Search Directories for the SDL include folder
 * open the .cbp file and adjust the path in ExtraCommands > XCopy
 
-You may need to adjust the Project Properties > Build Targets > Execution Working Dir to point to [examples/data](examples/data) folder (Code::Blocks doesn't seem to like a relative path there).
+In order to run an example from Code::Blocks, adjust the Project Properties > Build Targets > Execution Working Dir to point to [examples/data](examples/data) folder (Code::Blocks doesn't seem to like a relative path there).
 
 ## License
 
