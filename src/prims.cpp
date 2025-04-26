@@ -16,6 +16,7 @@
 
 #include "prims.h"
 #include <iostream>
+#include <algorithm>
 //#include "fixed.h"
 
 template <class T>
@@ -946,8 +947,8 @@ void inline hZTexLine(char *p,   long next_scan,  int xs, int xe, int y,
     if (xs  < XLeft)
     {
         // update the starting texture coordinate also
-        tus += -(float)xs * tuLength / xLength;
-        tvs += -(float)xs * tvLength / xLength;
+        tus += (float)(XLeft - xs) * tuLength / xLength;
+        tvs += (float)(XLeft - xs) * tvLength / xLength;
 
         xs = XLeft;
     }
@@ -961,14 +962,16 @@ void inline hZTexLine(char *p,   long next_scan,  int xs, int xe, int y,
         xe = XRight;
     }
 
+    xLength = (xe - xs) + 1;
+
     p += y * next_scan + (xs * 4);
     zbuf = zbuf + y * znext_scan + (xs * 2);
     //tex += ty * tnext_scan + (txs * 4);
 
-    float tdu = (float)(tue - tus) / (xe - xs + 1);
-    float tdv = (float)(tve - tvs) / (xe - xs + 1);
+    float tdu = (float)(tue - tus) / xLength;
+    float tdv = (float)(tve - tvs) / xLength;
     float  tu = tus, tv = tvs;
-    float  tz = zs, tdz = (float)(ze - zs) / (float)(xe - xs + 1);
+    float  tz = zs, tdz = (float)(ze - zs) / xLength;
 
     //cout << "htex" << endl;
     //cout << zs << ", " << ze << endl;
@@ -983,7 +986,7 @@ void inline hZTexLine(char *p,   long next_scan,  int xs, int xe, int y,
     //  cout << y << " :";
     //}
 
-    for(int i = 0; i <= xe - xs + 1; i++)
+    for(int i = 0; i < xLength; i++)
     {
         //cout << tu << ", " << tv << " - " << tnext_scan << " - " << tv * tnext_scan + tu << endl;
 
@@ -1238,7 +1241,8 @@ void ZTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, in
 void inline hZGTexLine(char *p,   long next_scan,  int xs, int xe, int y,
                        char *tex, long tnext_scan, short int tus, short int tue, short int tvs, short int tve,
                        char *zbuf, long znext_scan, float zs, float ze,
-                       float rs, float gs, float bs, float re, float ge, float be)
+                       float rs, float gs, float bs, float re, float ge, float be,
+                       int twidth, int theight)
 {
     //cout << "htexline" << endl;
 
@@ -1264,24 +1268,26 @@ void inline hZGTexLine(char *p,   long next_scan,  int xs, int xe, int y,
     if ((y  < YTop) ||   (y  > YBot)) return;
     if ((xs > XRight) || (xe < XLeft)) return;
 
-    int tuLength = tue - tus + 1;
-    int tvLength = tve - tvs + 1;
-    int xLength = (xe - xs) + 1;
-    float rLength = re - rs + 1;
-    float gLength = ge - gs + 1;
-    float bLength = be - bs + 1;
+    int tuLength = tue - tus;
+    int tvLength = tve - tvs;
+    int xLength = xe - xs;
+    float rLength = re - rs;
+    float gLength = ge - gs;
+    float bLength = be - bs;
 
     if (xs  < XLeft)
     {
         // update the starting texture coordinate also
+        int deltaX = XLeft - xs;
+
         xs = XLeft;
 
-        tus += -(float)xs * tuLength / xLength;
-        tvs += -(float)xs * tvLength / xLength;
+        tus += (float)deltaX * tuLength / xLength;
+        tvs += (float)deltaX * tvLength / xLength;
 
-        rs += -(float)xs * rLength / xLength;
-        gs += -(float)xs * gLength / xLength;
-        bs += -(float)xs * bLength / xLength;
+        rs += (float)deltaX * rLength / xLength;
+        gs += (float)deltaX * gLength / xLength;
+        bs += (float)deltaX * bLength / xLength;
     }
 
     if (xe  > XRight)
@@ -1289,22 +1295,27 @@ void inline hZGTexLine(char *p,   long next_scan,  int xs, int xe, int y,
         // update the end texture coordinate also
         xe = XRight;
 
-        tue = tue - (float)(xe - XRight) * tuLength / xLength;
-        tve = tve - (float)(xe - XRight) * tvLength / xLength;
+        int deltaX = xe - XRight;
 
-        re = re - (float)(xe - XRight) * rLength / xLength;
-        ge = ge - (float)(xe - XRight) * rLength / xLength;
-        be = be - (float)(xe - XRight) * rLength / xLength;
+        tue = tue - (float)deltaX * tuLength / xLength;
+        tve = tve - (float)deltaX * tvLength / xLength;
+
+        re = re - (float)deltaX * rLength / xLength;
+        ge = ge - (float)deltaX * gLength / xLength;
+        be = be - (float)deltaX * bLength / xLength;
     }
+
+    // recalculate after clipping
+    xLength = xe - xs;
 
     p += y * next_scan + (xs * 4);
     zbuf = zbuf + y * znext_scan + (xs * 2);
     //tex += ty * tnext_scan + (txs * 4);
 
-    float tdu = (float)(tue - tus) / (xe - xs + 1);
-    float tdv = (float)(tve - tvs) / (xe - xs + 1);
+    float tdu = (float)(tue - tus) / xLength;
+    float tdv = (float)(tve - tvs) / xLength;
     float  tu = tus, tv = tvs;
-    float  tz = zs, tdz = (float)(ze - zs) / (float)(xe - xs + 1);
+    float  tz = zs, tdz = (float)(ze - zs) / xLength;
     float rd = (float)(re - rs) / xLength;
     float gd = (float)(ge - gs) / xLength;
     float bd = (float)(be - bs) / xLength;
@@ -1332,13 +1343,16 @@ void inline hZGTexLine(char *p,   long next_scan,  int xs, int xe, int y,
 
         if ((lZ > tz) && (tz > 0))
         {
+            // BUGFIX: there is crash (probably accessing out of bounds memory) with certain point configurations
             long lColor = *((long*)tex + (long)tv * (tnext_scan >> 2) + (long)tu);
 
             float lCr = rs * ((lColor & 0xFF0000) >> 16) / 255;
             float lCg = gs * ((lColor & 0x00FF00) >> 8) / 255;
             float lCb = bs * ((lColor & 0x0000FF)) / 255;
 
-            *((long*)p) = ((int)lCb << 16) | ((int)lCg << 8) | (int)lCr;
+            long newColor = ((int)lCr << 16) | ((int)lCg << 8) | (int)lCb;
+
+            *((long*)p) = newColor;
             *((short int *)zbuf) = (short int)tz;
             //cout << tz << " ";
         }
@@ -1347,7 +1361,11 @@ void inline hZGTexLine(char *p,   long next_scan,  int xs, int xe, int y,
         //cout << "texel dumped" << endl;
 
         tu += tdu;
+        tu = std::clamp(tu, 0.f, (float)twidth);
+
         tv += tdv;
+        tv = std::clamp(tv, 0.f, (float)theight);
+
         tz += tdz;
         p  += 4;
         zbuf += 2;
@@ -1519,7 +1537,7 @@ void ZGTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, i
         {
             while (y < p1y)
             {
-                hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx);
+                hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx, twidth, theight);
                 y++;
                 //p  += next_scan;
                 x  += d;
@@ -1542,7 +1560,7 @@ void ZGTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, i
         {
             while (y < p1y)
             {
-                hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx);
+                hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx, twidth, theight);
                 y++;
                 //p  += next_scan;
                 x  += d;
@@ -1608,7 +1626,7 @@ void ZGTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, i
     {
         while (y < p2y)
         {
-            hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx);
+            hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx, twidth, theight);
             y++;
             x  += d;
             x0 += d0;
@@ -1630,7 +1648,7 @@ void ZGTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, i
     {
         while (y < p2y)
         {
-            hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx);
+            hZGTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u % twidth, (short int)u0 % twidth, (short int)v % theight, (short int)v0 % theight, zbuf, znext_scan, z, z0, r, g, b, rx, gx, bx, twidth, theight);
             //hZTexLine(p, next_scan, (int)x, (int)x0, y, tex, tnext_scan, (short int)u, (short int)u0, (short int)v, (short int)v0, zbuf, znext_scan, z, z0);
             y++;
             x  += d;

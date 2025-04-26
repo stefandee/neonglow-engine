@@ -261,7 +261,7 @@ void CRServer::RenderBspTexTriangle(std::vector<CPoint3D*>& _points, std::vector
     int texWidthMinus1 = texWidth - 1;
     int texHeightMinus1 = texHeight - 1;
 
-    for(int i = 1; i < (int)_outpoints.size(); i++)
+    for(int i = 2; i < (int)_outpoints.size(); i++)
     {
         /*
         cout << "ztex traingle...";

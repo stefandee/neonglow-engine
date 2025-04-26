@@ -55,10 +55,12 @@ protected:
                     CPlane _plane,
                     std::vector<CPoint3D*>& _outpoints, std::vector<CTexVertex*>& _outtpoints);
 
+public:
+    SDL_Surface* mColorBuffer;
+
 private:
     char* mZBuffer; // the z-buffer
     //char* mColorBuffer; // this is the color buffer - sort of like the back buffer
-    SDL_Surface* mColorBuffer;
     CMatrix4 mMatrix, mCameraMatrix;
     CCamera mCamera;
 

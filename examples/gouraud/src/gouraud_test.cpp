@@ -38,6 +38,8 @@ public:
     void Draw() override;
     void Loop() override;
 
+    void UseLighting(bool v);
+
 private:
     void EraseZBuffer();
 
@@ -45,8 +47,9 @@ private:
     char*      gZBuffer;
     CTexMgr    gTexMgr;
     CTex*      gTex;
+    bool       useLighting = true;
 
-    CPoint2D p1 = CPoint2D(200., 100.), p2 = CPoint2D(150.,300.), p3 = CPoint2D(350.,350.);
+    CPoint2D p1 = CPoint2D(20., 15.), p2 = CPoint2D(620.,15.), p3 = CPoint2D(620.,465.), p4 = CPoint2D(20.f, 465.f);
 };
 
 GouraudTestApp::GouraudTestApp( Uint32 flags, const std::string& appName, int screenWidth, int screenHeight ) :
@@ -98,29 +101,100 @@ void GouraudTestApp::Draw()
 
     EraseZBuffer();
 
-    ZGTexTriangle
-    (
-        (char*)m_screenSurface->pixels,
-        m_screenSurface->pitch,
-        p1.GetX(), p1.GetY(),
-        p2.GetX(), p2.GetY(),
-        p3.GetX(), p3.GetY(),
-        gTex->GetData(0),
-        gTex->GetWidth() * 4,
-        0, 0,
-        gTex->GetWidth(), 0,
-        0, gTex->GetHeight(),
-        gZBuffer,
-        RBufferW * 2,
-        20,
-        20,
-        20,
-        gTex->GetWidth(),
-        gTex->GetHeight(),
-        0x00FF00,
-        0x0000FF,
-        0xFF0000
-    );
+    if (useLighting)
+    {
+        ZGTexTriangle
+        (
+            (char*)gRenderServer.mColorBuffer->pixels,
+            gRenderServer.mColorBuffer->pitch,
+            p1.GetX(), p1.GetY(),
+            p2.GetX(), p2.GetY(),
+            p3.GetX(), p3.GetY(),
+            gTex->GetData(0),
+            gTex->GetWidth() * 4,
+            0, 0,
+            gTex->GetWidth() - 1, 0,
+            gTex->GetWidth() - 1, gTex->GetHeight() - 1,
+            gZBuffer,
+            RBufferW * 2,
+            100,
+            100,
+            100,
+            gTex->GetWidth(),
+            gTex->GetHeight(),
+            0xFF0000,
+            0xFFFF00,
+            0x0000FF
+        );
+
+        ZGTexTriangle
+        (
+            (char*)gRenderServer.mColorBuffer->pixels,
+            gRenderServer.mColorBuffer->pitch,
+            p3.GetX(), p3.GetY(),
+            p4.GetX(), p4.GetY(),
+            p1.GetX(), p1.GetY(),
+            gTex->GetData(0),
+            gTex->GetWidth() * 4,
+            gTex->GetWidth() - 1, gTex->GetHeight() - 1,
+            0, gTex->GetHeight() - 1,
+            0, 0,
+            gZBuffer,
+            RBufferW * 2,
+            20,
+            20,
+            20,
+            gTex->GetWidth(),
+            gTex->GetHeight(),
+            0x0000FF,
+            0xFFFF00,
+            0xFF0000
+        );
+    }
+    else
+    {
+        ZTexTriangle
+        (
+            (char*)gRenderServer.mColorBuffer->pixels,
+            gRenderServer.mColorBuffer->pitch,
+            p1.GetX(), p1.GetY(),
+            p2.GetX(), p2.GetY(),
+            p3.GetX(), p3.GetY(),
+            gTex->GetData(0),
+            gTex->GetWidth() * 4,
+            0, 0,
+            gTex->GetWidth() - 1, 0,
+            gTex->GetWidth() - 1, gTex->GetHeight() - 1,
+            gZBuffer,
+            RBufferW * 2,
+            100,
+            100,
+            100,
+            gTex->GetWidth(),
+            gTex->GetHeight()
+        );
+
+        ZTexTriangle
+        (
+            (char*)gRenderServer.mColorBuffer->pixels,
+            gRenderServer.mColorBuffer->pitch,
+            p3.GetX(), p3.GetY(),
+            p4.GetX(), p4.GetY(),
+            p1.GetX(), p1.GetY(),
+            gTex->GetData(0),
+            gTex->GetWidth() * 4,
+            gTex->GetWidth() - 1, gTex->GetHeight() - 1,
+            0, gTex->GetHeight() - 1,
+            0, 0,
+            gZBuffer,
+            RBufferW * 2,
+            20,
+            20,
+            20,
+            gTex->GetWidth(),
+            gTex->GetHeight()
+        );
+    }
 
     gRenderServer.Draw(m_screenSurface);
 
@@ -154,17 +228,21 @@ void GouraudTestApp::Loop()
                 case SDLK_SPACE:
                     lA = 1. * 3.1415 / 180.0;
 
-                    x = p1.GetX() - 200.;
-                    y = p1.GetY() - 200.;
-                    p1 = CPoint2D(x * cos(lA) - y * sin(lA) + 200., x * sin(lA) + y * cos(lA) + 200.);
+                    x = p1.GetX() - 320.;
+                    y = p1.GetY() - 240.;
+                    p1 = CPoint2D(x * cos(lA) - y * sin(lA) + 320., x * sin(lA) + y * cos(lA) + 240.);
 
-                    x = p2.GetX() - 200.;
-                    y = p2.GetY() - 200.;
-                    p2 = CPoint2D(x * cos(lA) - y * sin(lA) + 200., x * sin(lA) + y * cos(lA) + 200.);
+                    x = p2.GetX() - 320.;
+                    y = p2.GetY() - 240.;
+                    p2 = CPoint2D(x * cos(lA) - y * sin(lA) + 320., x * sin(lA) + y * cos(lA) + 240.);
 
-                    x = p3.GetX() - 200.;
-                    y = p3.GetY() - 200.;
-                    p3 = CPoint2D(x * cos(lA) - y * sin(lA) + 200., x * sin(lA) + y * cos(lA) + 200.);
+                    x = p3.GetX() - 320.;
+                    y = p3.GetY() - 240.;
+                    p3 = CPoint2D(x * cos(lA) - y * sin(lA) + 320., x * sin(lA) + y * cos(lA) + 240.);
+
+                    x = p4.GetX() - 320.;
+                    y = p4.GetY() - 240.;
+                    p4 = CPoint2D(x * cos(lA) - y * sin(lA) + 320., x * sin(lA) + y * cos(lA) + 240.);
                     break;
 
                 case SDLK_ESCAPE:
@@ -191,12 +269,18 @@ void GouraudTestApp::Loop()
     }
 }
 
+void GouraudTestApp::UseLighting(bool v)
+{
+    useLighting = v;
+}
+
 int main( int argc, char * argv[] )
 {
     try
     {
         GouraudTestApp app( SDL_INIT_VIDEO | SDL_INIT_TIMER, std::string("Gouraud Test") );
 
+        app.UseLighting(true);
         app.Setup();
         app.Loop();
 
@@ -211,184 +295,3 @@ int main( int argc, char * argv[] )
 
     return 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-#include <iostream.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-
-// engine includes
-#include "math3d.h"
-#include "geom.h"
-#include "data3d.h"
-#include "rserver.h"
-#include "prims.h"
-#include "tex.h"
-#include "texmgr.h"
-#include <sdl\SDL.h>
-
-CTexMgr    gTexMgr;
-CTex*      gTex;
-char*      gZBuffer;
-
-void Setup()
-{
-  // setup of the render server
-  // gRenderServer.EraseColorBuffer();
-  // gRenderServer.EraseZBuffer();
-
-}
-
-int main (int argc, char* argv[])
-{
-  SDL_Surface *screen;
-  Uint8  video_bpp;
-  Uint32 videoflags;
-  Uint8 *buffer;
-  int i, done;
-  SDL_Event event;
-
-  //
-  // Initialize SDL
-  //
-  if ( SDL_Init(SDL_INIT_VIDEO) < 0 )
-  {
-    fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
-    exit(1);
-  }
-  atexit(SDL_Quit);
-
-  video_bpp = 32;
-  videoflags = SDL_SWSURFACE;
-
-  //
-  // Set 640x480 windowed video mode
-  //
-  if ( (screen=SDL_SetVideoMode(640,480,video_bpp,videoflags)) == NULL )
-  {
-    fprintf(stderr, "Couldn't set 640x480x%d video mode: %s\n", video_bpp, SDL_GetError());
-    exit(2);
-  }
-
-  //
-  //  Init the engine stuff
-  //
-  Setup();
-
-  // Enable auto repeat for keyboard input
-  SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-  CPoint2D p1(200., 100.), p2(150.,300.), p3(350.,350.);
-  float lA = 0.0, x, y;
-
-  // Wait for a keystroke
-  done = 0;
-
-  while ( !done )
-  {
-    SDL_FillRect(screen, 0, 0);
-
-    for(int i = 0; i < RBufferH; i++)
-    {
-      for(int j = 0; j < RBufferW; j++)
-      {
-        *((short int*)gZBuffer + i * RBufferW + j) = 30000;
-      }
-    }
-
-    ZGTexTriangle
-    (
-      (char*)screen->pixels,
-      screen->pitch,
-      p1.GetX(), p1.GetY(),
-      p2.GetX(), p2.GetY(),
-      p3.GetX(), p3.GetY(),
-      gTex->GetData(0),
-      gTex->GetWidth() * 4,
-      0, 0,
-      gTex->GetWidth(), 0,
-      0, gTex->GetHeight(),
-      gZBuffer,
-      RBufferW * 2,
-      20,
-      20,
-      20,
-      gTex->GetWidth(),
-      gTex->GetHeight(),
-      0x00FF00,
-      0x0000FF,
-      0xFF0000
-    );
-
-    SDL_UpdateRect(screen, 0, 0, 0, 0);
-
-    // Check for events
-    while ( SDL_PollEvent(&event) )
-    {
-      switch (event.type)
-      {
-        case SDL_MOUSEBUTTONDOWN:
-          break;
-
-        case SDL_KEYDOWN:
-          lA = 1. * 3.1415 / 180.0;
-
-          x = p1.GetX() - 200.;
-          y = p1.GetY() - 200.;
-          p1 = CPoint2D(x * cos(lA) - y * sin(lA) + 200., x * sin(lA) + y * cos(lA) + 200.);
-
-          x = p2.GetX() - 200.;
-          y = p2.GetY() - 200.;
-          p2 = CPoint2D(x * cos(lA) - y * sin(lA) + 200., x * sin(lA) + y * cos(lA) + 200.);
-
-          x = p3.GetX() - 200.;
-          y = p3.GetY() - 200.;
-          p3 = CPoint2D(x * cos(lA) - y * sin(lA) + 200., x * sin(lA) + y * cos(lA) + 200.);
-          break;
-
-        case SDL_KEYUP:
-          break;
-
-        case SDL_QUIT:
-          done = 1;
-          break;
-
-        case SDL_MOUSEMOTION:
-          break;
-
-        default:
-          break;
-      }
-    }
-  }
-
-  SDL_FreeSurface(screen);
-
-  return(0);
-}
-
-*/
