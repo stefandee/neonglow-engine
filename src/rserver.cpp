@@ -255,9 +255,14 @@ void CRServer::RenderBspTexTriangle(std::vector<CPoint3D*>& _points, std::vector
         */
     }
 
-    for(int i = 2; i < (int)_outpoints.size(); i++)
-    {
+    int texWidth = _tex->GetWidth();
+    int texWidthX4 = texWidth * 4;
+    int texHeight = _tex->GetHeight();
+    int texWidthMinus1 = texWidth - 1;
+    int texHeightMinus1 = texHeight - 1;
 
+    for(int i = 1; i < (int)_outpoints.size(); i++)
+    {
         /*
         cout << "ztex traingle...";
         cout << "Ztex" << endl;
@@ -273,6 +278,8 @@ void CRServer::RenderBspTexTriangle(std::vector<CPoint3D*>& _points, std::vector
         cout << "Z: " << lZ[0] << ", " << lZ[1] << ", " << lZ[2] << endl;
         */
 
+        // std::cout << i << std::endl;
+
         ZTexTriangle(
             (char*)mColorBuffer->pixels,
             mColorBuffer->pitch,
@@ -280,17 +287,17 @@ void CRServer::RenderBspTexTriangle(std::vector<CPoint3D*>& _points, std::vector
             (int)lProj[i-1].GetX(), (int)lProj[i-1].GetY(),
             (int)lProj[i].GetX(), (int)lProj[i].GetY(),
             _tex->GetData(0),
-            _tex->GetWidth() * 4,
-            _outtpoints[0]->GetU() * _tex->GetWidth() - 1, _outtpoints[0]->GetV() * _tex->GetHeight() - 1,
-            _outtpoints[i-1]->GetU() * _tex->GetWidth() - 1, _outtpoints[i-1]->GetV() * _tex->GetHeight() - 1,
-            _outtpoints[i]->GetU() * _tex->GetWidth() - 1, _outtpoints[i]->GetV() * _tex->GetHeight() - 1,
+            texWidthX4,
+            _outtpoints[0]->GetU() * texWidthMinus1, _outtpoints[0]->GetV() * texHeightMinus1,
+            _outtpoints[i-1]->GetU() * texWidthMinus1, _outtpoints[i-1]->GetV() * texHeightMinus1,
+            _outtpoints[i]->GetU() * texWidthMinus1, _outtpoints[i]->GetV() * texHeightMinus1,
             mZBuffer,
             RBufferW * 2,
             lZ[0],
             lZ[i-1],
             lZ[i],
-            _tex->GetWidth(),
-            _tex->GetHeight()
+            texWidth,
+            texHeight
         );
     }
 

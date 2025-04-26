@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="md2_test/projects/codeblocks/md2_test.cbp" />
+		<Project filename="q2bsp/projects/codeblocks/q2bsp_test.cbp" />
+		<Project filename="gouraud/projects/codeblocks/gouraud_test.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

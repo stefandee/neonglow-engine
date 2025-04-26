@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="md2_test" />
+		<Option title="q2bsp_test" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/md2_test" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/q2bsp_test" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="$(PROJECT_DIR)/../../../" />
 				<Option object_output="obj/Debug/" />
 				<Option type="0" />
@@ -22,7 +22,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/md2_test" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/q2bsp_test" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="$(PROJECT_DIR)/../../../" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
@@ -104,7 +104,7 @@
 		<Unit filename="../../../common/src/SDL/SDLApp.h" />
 		<Unit filename="../../../common/src/SDL/SDLInitError.cpp" />
 		<Unit filename="../../../common/src/SDL/SDLInitError.h" />
-		<Unit filename="../../src/md2_test.cpp" />
+		<Unit filename="../../src/q2bsp_test.cpp" />
 		<Extensions>
 			<editor_config active="1" use_tabs="0" tab_indents="1" tab_width="4" indent="4" eol_mode="0" />
 			<lib_finder disable_auto="1" />

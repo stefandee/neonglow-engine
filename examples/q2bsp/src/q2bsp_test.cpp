@@ -22,15 +22,17 @@
 #include "rserver.h"
 #include "tex.h"
 #include "texmgr.h"
+#include "q2bspload.h"
+#include "bspworld.h"
 
 // other
 #include "SDLApp.h"
 #include "SDLInitError.h"
 
-class MD2TestApp : public SDLApp
+class Q2BSPTestApp : public SDLApp
 {
 public:
-    MD2TestApp( Uint32 flags, const std::string& appName, int screenWidth = 640, int screenHeight = 480 );
+    Q2BSPTestApp( Uint32 flags, const std::string& appName, int screenWidth = 640, int screenHeight = 480 );
 
 public:
     void Setup() override;
@@ -38,46 +40,40 @@ public:
     void Loop() override;
 
 private:
-    CObject3D* gObject;
+    CBspWorld* gWorld;
     CTexMgr    gTexMgr;
     CTex*      gTex;
 };
 
-MD2TestApp::MD2TestApp( Uint32 flags, const std::string& appName, int screenWidth, int screenHeight ) :
+Q2BSPTestApp::Q2BSPTestApp( Uint32 flags, const std::string& appName, int screenWidth, int screenHeight ) :
     SDLApp{flags, appName, screenWidth, screenHeight}
 {
 }
 
-void MD2TestApp::Setup()
+void Q2BSPTestApp::Setup()
 {
-    CMd2Loader lLoader;
+  gWorld = CQ2BspLoad().Load("data\\engine\\maps\\base1.bsp", &gTexMgr);
 
-    gObject = lLoader.Load("data\\engine\\models\\tris.md2");
-    gTexMgr.AddTex("data\\engine\\skins\\skin.wal");
-    gTex = gTexMgr.GetTex(0);
-    gObject->SetTexture(gTex);
+  gRenderServer.EraseColorBuffer();
+  gRenderServer.EraseZBuffer();
 
-    gRenderServer.EraseColorBuffer();
-    gRenderServer.EraseZBuffer();
+  gX = 128.;
+  gY = -320.;
+  gZ = 32.;
 
-    gX = 0.;
-    gY = 20.;
-    gZ = 0.;
+  gCamera = CCamera(CPoint3D(gX, gY, gZ), CPoint3D(0., 0., 0.), CPoint3D(0., 0., -100.), 0.0);
 
-    gCamera.SetViewPoint(CPoint3D(gX, gY, gZ));
-    //gCamera.SetFocusPoint(CPoint3D((bb.GetLowBound().GetX() + bb.GetHighBound().GetX())/2, (bb.GetLowBound().GetY() + bb.GetHighBound().GetY())/2, (bb.GetLowBound().GetZ() + bb.GetHighBound().GetZ())/2));
-    gCamera.SetFocusPoint(CPoint3D(0., 0., 0.));
-    gCamera.SetUpPoint(CPoint3D(0., 0., 100.));
+  gWorld->SetCamera(&gCamera);
 
-    gRenderServer.SetCamera(gCamera);
+  gRenderServer.SetCamera(gCamera);
 }
 
-void MD2TestApp::Draw()
+void Q2BSPTestApp::Draw()
 {
     gRenderServer.EraseColorBuffer();
     gRenderServer.EraseZBuffer();
 
-    gObject->Draw();
+    gWorld->Render();
 
     gRenderServer.Draw(m_screenSurface);
 
@@ -85,7 +81,7 @@ void MD2TestApp::Draw()
 	SDL_UpdateWindowSurface( m_window );
 }
 
-void MD2TestApp::Loop()
+void Q2BSPTestApp::Loop()
 {
     SDL_Event event;
 
@@ -118,7 +114,7 @@ void MD2TestApp::Loop()
                         lU = gCamera.GetU();
                         lN = gCamera.GetN();
 
-                        lView = CPoint3D(lView.GetX() + 2 * lU.GetX(), lView.GetY() + 2 * lU.GetY(), lView.GetZ() + 2 * lU.GetZ());
+                        lView = CPoint3D(lView.GetX() + 5 * lU.GetX(), lView.GetY() + 5 * lU.GetY(), lView.GetZ() + 5 * lU.GetZ());
 
                         //gCamera.SetViewPoint(lView);
 
@@ -133,7 +129,7 @@ void MD2TestApp::Loop()
                         lU = gCamera.GetU();
                         lN = gCamera.GetN();
 
-                        lView = CPoint3D(lView.GetX() - 2 * lU.GetX(), lView.GetY() - 2 * lU.GetY(), lView.GetZ() - 2 * lU.GetZ());
+                        lView = CPoint3D(lView.GetX() - 5 * lU.GetX(), lView.GetY() - 5 * lU.GetY(), lView.GetZ() - 5 * lU.GetZ());
 
                         //gCamera.SetViewPoint(lView);
                         gCamera = CCamera(lView, gCamera.GetFocusPoint(), gCamera.GetUpPoint(), 0.0);
@@ -235,7 +231,7 @@ int main( int argc, char * argv[] )
 {
     try
     {
-        MD2TestApp app( SDL_INIT_VIDEO | SDL_INIT_TIMER, std::string("MD2 Test") );
+        Q2BSPTestApp app( SDL_INIT_VIDEO | SDL_INIT_TIMER, std::string("Q2 BSP Test") );
 
         app.Setup();
         app.Loop();

@@ -40,7 +40,7 @@ CBspWorld* CQ2BspLoad::Load(const char* _filename, CTexMgr* _texMgr)
         return NULL;
     }
 
-    // sset the tex manager
+    // set the tex manager
     mTexMgr = _texMgr;
 
     // read in the header
@@ -275,8 +275,10 @@ void CQ2BspLoad::ReadTex()
         lBspTex->SetUOffset(lUOffset);
         lBspTex->SetVOffset(lVOffset);
 
+        // cout << "Loading texture" << lTexName << endl;
+
         // now load the texture data
-        bool lResult = mTexMgr->AddTex((string("data\\tex\\") + string(lTexName) + string(".wal")).c_str());
+        bool lResult = mTexMgr->AddTex((string("data\\engine\\tex\\") + string(lTexName) + string(".wal")).c_str());
 
         //cout << "(" << lUX << "," << lUY << "," << lUZ << " - " << lUOffset << ") - (" << lVX << "," << lVY << "," << lVZ << " - " << lUOffset << ")" << endl;
 
@@ -302,7 +304,7 @@ void CQ2BspLoad::ReadFaces()
     int lCount = mHdr.mLumps[Q2_LUMP_FACES].mLength / 20;
 
     mFile.seekg(mHdr.mLumps[Q2_LUMP_FACES].mOffset, ios::beg);
-    cout << ": " << lCount << " faces " << endl;
+    // cout << ": " << lCount << " faces " << endl;
 
     for(int i = 0; i < lCount; i++)
     {

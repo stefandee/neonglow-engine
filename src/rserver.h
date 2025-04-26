@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Quick and Dirty - Rendering Server
-// the hub to show 3D to screen - all rendering pass thru this class
+// the hub to show 3D to screen - all rendering passes through this class
 
 #ifndef RSERVERH
 #define RSERVERH

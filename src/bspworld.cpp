@@ -218,11 +218,11 @@ void CBspWorld::Render()
     vector<CTexVertex*> lTexVerts;
     int lFacesRendered = 0, lFacesInCube = 0;
 
+    // 2380
     for(int i = 0; i < (int)mBspFaces.size(); i++)
     {
         CBspFace* lFace = mBspFaces[i];
         int lEdgeIndex = lFace->GetEdgeIndex();
-        int lVertexIndex1, lVertexIndex2, lVertexIndex3, lVertexIndex4;
         CBspEdge* lEdge;
         CTex* lTex = 0;
         CBspTex* lBspTex = 0;
@@ -275,7 +275,7 @@ void CBspWorld::Render()
             continue;
         }
 
-        //cout << "Face #" << i << ": edges " << lFace->GetEdgeCount() << " from " << lEdgeIndex << endl;
+        // cout << "Face #" << i << ": edges " << lFace->GetEdgeCount() << " from " << lEdgeIndex << endl;
         for(int j = 0; j < lFace->GetEdgeCount(); j++)
         {
             // get the edge data in the face edge list
@@ -283,7 +283,7 @@ void CBspWorld::Render()
 
             int lFaceEdgeIndex = (int)mFaceEdge[lEdgeIndex + j];
 
-            CPoint3D* lP1, *lP2;
+            CPoint3D* lP1;
 
             //cout << "comparing..." << endl;
             if (lFaceEdgeIndex < 0)

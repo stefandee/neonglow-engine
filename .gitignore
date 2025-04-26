@@ -31,8 +31,9 @@
 *.out
 *.app
 
-# Releases
+# Internal folders
 .releases/
+.tutorials
 
 # Temporary/generated folders and files
 bin/
