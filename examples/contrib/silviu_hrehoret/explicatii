@@ -1,0 +1,12 @@
+Am modificat proiectul md2_test ca sa afiseze figuri 3D in locul 
+luptatorului din Quake2.
+
+In fiecare din cele 4 directoare se afla un fisier engine.cpp care
+va trebui sa fie pus in directorul cu sursele engine-ului si daca 
+se recompileaza proiectul md2_test atunci se obtine figura care e 
+data de numele directorului de unde a fost luat fisierul engine.cpp
+
+Fisierele objlib.h si objlib.cpp sunt indispensabile pentru cele
+trei figuri noi (trunchi de con , piramida si PQTorul), ele trebuie
+copiate tot in directorul cu sursele engine-ului.
+

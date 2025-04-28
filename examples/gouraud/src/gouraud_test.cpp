@@ -39,6 +39,7 @@ public:
     void Loop() override;
 
     void UseLighting(bool v);
+    void SetUVRepeat(CPoint2D v) { uvRepeat = v; }
 
 private:
     void EraseZBuffer();
@@ -48,6 +49,7 @@ private:
     CTexMgr    gTexMgr;
     CTex*      gTex;
     bool       useLighting = true;
+    CPoint2D  uvRepeat;
 
     CPoint2D p1 = CPoint2D(20., 15.), p2 = CPoint2D(620.,15.), p3 = CPoint2D(620.,465.), p4 = CPoint2D(20.f, 465.f);
 };
@@ -163,8 +165,8 @@ void GouraudTestApp::Draw()
             gTex->GetData(0),
             gTex->GetWidth() * 4,
             0, 0,
-            gTex->GetWidth() - 1, 0,
-            gTex->GetWidth() - 1, gTex->GetHeight() - 1,
+            uvRepeat.GetX() * gTex->GetWidth() - 1, 0,
+            uvRepeat.GetX() * gTex->GetWidth() - 1, uvRepeat.GetY() * gTex->GetHeight() - 1,
             gZBuffer,
             RBufferW * 2,
             100,
@@ -183,8 +185,8 @@ void GouraudTestApp::Draw()
             p1.GetX(), p1.GetY(),
             gTex->GetData(0),
             gTex->GetWidth() * 4,
-            gTex->GetWidth() - 1, gTex->GetHeight() - 1,
-            0, gTex->GetHeight() - 1,
+            uvRepeat.GetX() * gTex->GetWidth() - 1, uvRepeat.GetY() * gTex->GetHeight() - 1,
+            0, uvRepeat.GetY() * gTex->GetHeight() - 1,
             0, 0,
             gZBuffer,
             RBufferW * 2,
@@ -280,7 +282,8 @@ int main( int argc, char * argv[] )
     {
         GouraudTestApp app( SDL_INIT_VIDEO | SDL_INIT_TIMER, std::string("Gouraud Test") );
 
-        app.UseLighting(true);
+        app.UseLighting(false);
+        app.SetUVRepeat(CPoint2D(2.f, 2.f));
         app.Setup();
         app.Loop();
 

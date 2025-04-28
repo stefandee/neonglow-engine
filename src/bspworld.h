@@ -216,11 +216,11 @@ public: // get-set
 public: // ops
     float ComputeU(CPoint3D& _p)
     {
-        return (_p.GetX() * mUAxis.GetX() + _p.GetY() * mUAxis.GetY() + _p.GetZ() * mUAxis.GetZ() + mUOffset) / (float)mTex->GetWidth();
+        return (_p.GetX() * mUAxis.GetX() + _p.GetY() * mUAxis.GetY() + _p.GetZ() * mUAxis.GetZ() + mUOffset) / mTex->GetWidth();
     }
     float ComputeV(CPoint3D& _p)
     {
-        return (_p.GetX() * mVAxis.GetX() + _p.GetY() * mVAxis.GetY() + _p.GetZ() * mVAxis.GetZ() + mVOffset) / (float)mTex->GetHeight();
+        return (_p.GetX() * mVAxis.GetX() + _p.GetY() * mVAxis.GetY() + _p.GetZ() * mVAxis.GetZ() + mVOffset) / mTex->GetHeight();
     }
 
 protected:

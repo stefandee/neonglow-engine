@@ -1018,6 +1018,7 @@ void inline hZTexLine(char *p,   long next_scan,  int xs, int xe, int y,
 //---------------------------------------------------------------------------
 
 // Draws textured triangles
+// TODO handle texture repeating and mirroring
 void ZTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, int p2x, int p2y,
                   char *tex, int tnext_scan, short int t0x, short int t0y, short int t1x, short int t1y, short int t2x, short int t2y,
                   char *zbuf, int znext_scan, float zb0, float zb1, float zb2,
@@ -1382,6 +1383,7 @@ void inline hZGTexLine(char *p,   long next_scan,  int xs, int xe, int y,
 //---------------------------------------------------------------------------
 
 // Draws gouraud & textured triangles
+// TODO handle texture repeating and mirroring
 void ZGTexTriangle(char *p, int next_scan, int p0x, int p0y, int p1x, int p1y, int p2x, int p2y,
                    char *tex, int tnext_scan, short int t0x, short int t0y, short int t1x, short int t1y, short int t2x, short int t2y,
                    char *zbuf, int znext_scan, float zb0, float zb1, float zb2,

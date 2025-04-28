@@ -23,7 +23,7 @@ A C++ compiler
 * tested using x86_64-w64 architecture.
 
 SDL 2
-* tested with [SDL2-2.30.11](https://github.com/libsdl-org/SDL/releases/tag/release-2.30.11);
+* tested with [SDL2-2.30.11 x64](https://github.com/libsdl-org/SDL/releases/tag/release-2.30.11);
 * unpack into [lib](lib/) folder or, if you have it installed, adjust the paths to your installation.
 
 Examples come with [Code::Blocks](https://www.codeblocks.org/) projects (optional)
@@ -36,7 +36,9 @@ If you have installed SDL in another directory than [lib](lib/), you may need to
 * adjust Project Build Settings > Search Directories for the SDL include folder
 * open the .cbp file and adjust the path in ExtraCommands > XCopy
 
-In order to run an example from Code::Blocks, adjust the Project Properties > Build Targets > Execution Working Dir to point to [examples/data](examples/data) folder (Code::Blocks doesn't seem to like a relative path there).
+Please note that in order to run an example from Code::Blocks, Project Properties > Build Targets > Execution Working Dir must point to [examples/](examples/) folder.
+
+Also, you might need to manually set the Code::Blocks debugger executable path (Settings > Debugger settings > default configuration) to point to a 64-bit debugger (preferably the one that came with mingw64), otherwise debugging will silently fail.
 
 ## License
 

@@ -218,7 +218,6 @@ void CBspWorld::Render()
     vector<CTexVertex*> lTexVerts;
     int lFacesRendered = 0, lFacesInCube = 0;
 
-    // 2380
     for(int i = 0; i < (int)mBspFaces.size(); i++)
     {
         CBspFace* lFace = mBspFaces[i];
