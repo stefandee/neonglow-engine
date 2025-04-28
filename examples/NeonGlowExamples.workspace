@@ -4,5 +4,6 @@
 		<Project filename="md2_test/projects/codeblocks/md2_test.cbp" />
 		<Project filename="q2bsp/projects/codeblocks/q2bsp_test.cbp" />
 		<Project filename="gouraud/projects/codeblocks/gouraud_test.cbp" />
+		<Project filename="bspworld/projects/codeblocks/bspworld_test.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

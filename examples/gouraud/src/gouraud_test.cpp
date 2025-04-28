@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// This example loads and renders a Quake 2 MD2 model file.                   //
+// This example tests triangle texturing and lighting using Gouraud model.    //
 //                                                                            //
 // This file is part of NeonGlow Engine.                                      //
 //                                                                            //
